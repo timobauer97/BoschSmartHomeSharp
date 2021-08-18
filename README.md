@@ -5,7 +5,6 @@ requires self-signed client certificate provided as file "client_pfx.PFX", which
 
 ```C#
 BoschSmartHomeSharp.ApiClient apiclient;
-List<device> allDevices;
 (...)
 apiclient = new BoschSmartHomeSharp.ApiClient("192.168.0.10");
 (...)
@@ -25,6 +24,7 @@ private void registerClient // register new client
 
 
 ```C#
-alldevices = new List<device>();
+List<device> allDevices;
+(...)
 allDevices = apiclient.getDevices();
 ```
