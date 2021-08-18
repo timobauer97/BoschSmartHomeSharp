@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Company>Dennis Schulze</Company>
+    <Copyright>Dennis Schulze 2021</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/DennisSc/BoschSmartHomeSharp</PackageProjectUrl>
+    <Authors>Dennis Schulze</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>C# wrapper class for Bosch SmartHome REST API (work in progress)</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+  </ItemGroup>
+
+</Project>
