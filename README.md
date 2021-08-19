@@ -27,7 +27,5 @@ private void registerClient // register new client
 
 
 ```C#
-List<device> allDevices;
-(...)
-allDevices = apiclient.getDevices();
+List<device> allDevices = apiclient.getDevices();
 ```
