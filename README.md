@@ -11,7 +11,7 @@ BoschSmartHomeSharp.ApiClient apiclient;
 certFile = Path.Join(Directory.GetCurrentDirectory(), "client_pfx.pfx");
 apiclient = new BoschSmartHomeSharp.ApiClient("192.168.0.10", certFile, "myCertPwd123");
 (...)
-private void registerClient // register new client
+private void registerClient() // register new client
 {
     string clientCert = "\"-----BEGIN CERTIFICATE-----\\rMIID(...)A==\\r-----END CERTIFICATE-----\"";
     bool result = apiclient.registerDevice("c29tZXRoaW5nMTIzIQ==", clientCert, "myNewBoschClientApp");
