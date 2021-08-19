@@ -29,8 +29,28 @@ public class BoschSmartHomeSharp
 
             }
 
+            public ApiClient(string ip, string certFilePath, string certPassword)
+            {
+                IPaddress = ip;
+                certificate = new X509Certificate2(certFilePath, certPassword);
+                url = "https://" + IPaddress + ":8444/smarthome";
 
-            public int getDeviceOnOffState(device mydevice)
+
+
+            }
+
+            public ApiClient(string ip, string certFilePath)
+            {
+                IPaddress = ip;
+                certificate = new X509Certificate2(certFilePath);
+                url = "https://" + IPaddress + ":8444/smarthome";
+
+
+
+            }
+
+
+        public int getDeviceOnOffState(device mydevice)
             {
                 RestSharp.RestClient client;
 
