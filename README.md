@@ -8,17 +8,18 @@ requires self-signed client certificate to talk with the Bosch smart home contro
 ```C#
 BoschSmartHomeSharp.ApiClient apiclient;
 (...)
-apiclient = new BoschSmartHomeSharp.ApiClient("192.168.0.10");
+certFile = Path.Join(Directory.GetCurrentDirectory(), "client_pfx.pfx");
+apiclient = new BoschSmartHomeSharp.ApiClient("192.168.0.10", certFile, "myCertPwd123");
 (...)
 private void registerClient // register new client
-        {
-            string clientCert = "\"-----BEGIN CERTIFICATE-----\\rMIID(...)A==\\r-----END CERTIFICATE-----\"";
-            bool result = apiclient.registerDevice("c29tZXRoaW5nMTIzIQ==", clientCert, "myNewBoschClientApp");
-            if (!result)
-                Debug.WriteLine("registration not successful");
-            else
-                Debug.WriteLine("registration successful - yay!! :)");
-        }
+{
+    string clientCert = "\"-----BEGIN CERTIFICATE-----\\rMIID(...)A==\\r-----END CERTIFICATE-----\"";
+    bool result = apiclient.registerDevice("c29tZXRoaW5nMTIzIQ==", clientCert, "myNewBoschClientApp");
+    if (!result)
+        Debug.WriteLine("registration not successful");
+    else
+        Debug.WriteLine("registration successful - yay!! :)");
+}
 
 
 
