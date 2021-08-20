@@ -34,10 +34,10 @@ List<device> allDevices = apiclient.getDevices();
 subscribe to messages:
 ```C#
 string pollId = apiclient.subscribeLongPoll();
-IEnumerable<JToken> tokens = apiclient.longPoll(pollId);
-foreach (JToken token in tokens)
+IEnumerable<JToken> messages = apiclient.longPoll(pollId);
+foreach (JToken msg in messages)
                 {
-                    Debug.WriteLine(token.ToString());
+                    Debug.WriteLine(msg.ToString());
                 }
 client.unsubscribeLongPoll(pollId);
 ```
