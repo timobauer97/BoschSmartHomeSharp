@@ -9,6 +9,7 @@
     <Authors>Dennis Schulze</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>C# wrapper class for Bosch SmartHome REST API (work in progress)</Description>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
