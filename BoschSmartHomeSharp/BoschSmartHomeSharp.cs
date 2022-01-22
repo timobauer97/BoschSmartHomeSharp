@@ -414,7 +414,7 @@ public class BoschSmartHomeSharp
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Systempassword", devicePwdBase64);
-            request.AddParameter("application/json", RegisterDevice.Serialize(new Root { Type = "client", id = $"oss_{clientId}", name = $"OSS {clientName}", primaryRole = "ROLE_RESTRICTED_CLIENT", certificate = cert }), ParameterType.RequestBody);
+            request.AddParameter("application/json", RegisterDevice.Serialize(new RegisterDevice { Type = "client", id = $"oss_{clientId}", name = $"OSS {clientName}", primaryRole = "ROLE_RESTRICTED_CLIENT", certificate = cert }), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Debug.WriteLine(((int)response.StatusCode));
 
