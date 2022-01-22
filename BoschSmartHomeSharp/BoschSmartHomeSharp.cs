@@ -403,7 +403,22 @@ public class BoschSmartHomeSharp
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
         }
 
-
+        /// <summary>
+        ///     Registers a client in the Bosch Smarthome Controller. <br />
+        ///     <b>NOTE: Before this method is called, you need to press the pairing-button until the LEDs start flashing.</b>
+        /// </summary>
+        /// <param name="devicePwdBase64">the base64 encoded password of the controller.</param>
+        /// <param name="cert">
+        ///     the content of the certificate (begins with -----BEGIN CERTIFICATE-----).<br />
+        ///     <b>NOTE: As <a href="https://github.com/BoschSmartHome/bosch-shc-api-docs/tree/master/postman#customize-the-certificate">mentioned in the official GitHub repo</a>, the certificate might be modified!</b>
+        /// </param>
+        /// <param name="clientId">the id of the client</param>
+        /// <param name="clientName">the name of the client</param>
+        /// <returns>
+        ///     <see cref="bool"/><br /> 
+        ///     <b>true:</b> the client has been successfully registered.<br />
+        ///     <b>false:</b> an error occured.
+        /// </returns>
         public bool registerDevice(string devicePwdBase64, string cert, string clientId, string clientName)
         {
 
