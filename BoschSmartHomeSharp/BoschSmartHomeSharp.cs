@@ -7,7 +7,7 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
-
+using BoschSmartHome.mdl.RegisterDevice;
 
 public class BoschSmartHomeSharp
 {
@@ -404,7 +404,7 @@ public class BoschSmartHomeSharp
         }
 
 
-        public bool registerDevice(string devicePwdBase64, string cert, string clientname)
+        public bool registerDevice(string devicePwdBase64, string cert, string clientId, string clientName)
         {
 
             RestSharp.RestClient client = new RestSharp.RestClient("https://" + IPaddress + ":8443/smarthome/clients");
@@ -414,7 +414,7 @@ public class BoschSmartHomeSharp
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Systempassword", devicePwdBase64);
-            request.AddParameter("application/json", "{\r\n  \"@type\": \"client\",\r\n  \"id\": \"oss_" + clientname + "\",\r\n  \"name\": \"OSS " + clientname + "\",\r\n  \"primaryRole\": \"ROLE_RESTRICTED_CLIENT\",\r\n  \"certificate\": " + cert + "\r\n}\r\n", ParameterType.RequestBody);
+            request.AddParameter("application/json", RegisterDevice.Serialize(new Root { Type = "client", id = $"oss_{clientId}", name = $"OSS {clientName}", primaryRole = "ROLE_RESTRICTED_CLIENT", certificate = cert }), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Debug.WriteLine(((int)response.StatusCode));
 
