@@ -369,23 +369,35 @@ public class BoschSmartHomeSharp
             
         }
 
-
-
+        /// <summary>
+        ///     Fetches the device list from the Bosch Smarthome Controller.<br />
+        ///     the Certificate must be paired with the Controller (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <returns>
+        ///     <b>List with <see cref="Device"/></b>: Contains all devices, paired with the Smarthome Controller.<br />
+        ///     <b>null</b>: The request failed. See Debug-log for more informations.
+        /// </returns>
         public List<Device> getDevices()
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
-            RestSharp.RestClient client = new RestSharp.RestClient("https://" + IPaddress + ":8444/smarthome/devices");
-            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
-            client.Timeout = -1;
+            RestClient client = new RestClient("https://" + IPaddress + ":8444/smarthome/devices")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                Timeout = -1
+            };
+
             var request = new RestRequest(Method.GET);
+
+            //Request Header
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("api-version", "2.1");
+
             IRestResponse response = client.Execute(request);
-            //Debug.WriteLine(response.Content);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                //TODO Exception Handling
                 List<Device> devices = Device.DeserializeList(response.Content);
                 Debug.WriteLine($"found {devices.Count} devices.");
 
