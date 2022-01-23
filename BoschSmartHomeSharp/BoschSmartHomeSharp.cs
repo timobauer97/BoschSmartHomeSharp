@@ -369,6 +369,22 @@ public class BoschSmartHomeSharp
             
         }
 
+        public List<client> getClients()
+        {
+            RestSharp.RestClient client = new RestSharp.RestClient(url + "/clients");
+            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+            IRestResponse response = client.Execute(request);
+            string jsonResponse2 = "{\"clients\":" + response.Content + "}";
+            JToken token = JObject.Parse(jsonResponse2);
+            var payloadJson = token["clients"].ToString();
+            return JsonConvert.DeserializeObject<List<client>>(payloadJson);
+        }
+
         /// <summary>
         ///     Fetches the device list from the Bosch Smarthome Controller.<br />
         ///     the Certificate must be paired with the Controller (see <see cref="registerDevice(string, string, string, string)"/>)
@@ -409,22 +425,6 @@ public class BoschSmartHomeSharp
 
                 return null;
             }
-        }
-
-        public List<client> getClients()
-        {
-            RestSharp.RestClient client = new RestSharp.RestClient(url + "/clients");
-            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("api-version", "2.1");
-            IRestResponse response = client.Execute(request);
-            string jsonResponse2 = "{\"clients\":" + response.Content + "}";
-            JToken token = JObject.Parse(jsonResponse2);
-            var payloadJson = token["clients"].ToString();
-            return JsonConvert.DeserializeObject<List<client>>(payloadJson);
         }
 
         /// <summary>
