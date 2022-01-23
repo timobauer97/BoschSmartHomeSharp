@@ -386,6 +386,21 @@ public class BoschSmartHomeSharp
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
         }
 
+        /// <summary>
+        ///     Sets the state of a powerswitch. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="device">the device.</param>
+        /// <param name="state">
+        ///     <see cref="bool"/> <br />
+        ///     <b>true</b>: the switch will be turned on <br />
+        ///     <b>false</b>: the switch will be turned off
+        /// </param>
+        /// <returns>
+        ///     <see cref="bool"/> <br />
+        ///     <b>true</b>: the state was successfully set <br />
+        ///     <b>false</b>: The request failed. See Debug-log for more informations.
+        /// </returns>
         public bool setPowerSwitchState(Device device, bool state)
         {
             return setPowerSwitchState(device?.id, state);
