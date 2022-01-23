@@ -446,6 +446,45 @@ public class BoschSmartHomeSharp
             }
         }
 
+        public PowerSwitchState getPowerSwitchState(Device device)
+        {
+            return getPowerSwitchState(device?.id);
+        }
+
+        public PowerSwitchState getPowerSwitchState(string deviceId)
+        {
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                Timeout = -1
+            };
+
+            var request = new RestRequest(Method.GET);
+
+            //Request Header
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                //TODO Exception Handling
+                PowerSwitchState powerSwitchState = PowerSwitchState.Deserialize(response.Content);
+                Debug.WriteLine($"found PowerSwitch {deviceId}. state: {powerSwitchState.switchState}");
+
+                return powerSwitchState;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not fetch PowerSwitchState. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return null;
+            }
+        }
+
         /// <summary>
         ///     Sets the state of a powerswitch. <br />
         ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)

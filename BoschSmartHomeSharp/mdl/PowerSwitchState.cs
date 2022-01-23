@@ -20,6 +20,11 @@ namespace BoschSmartHome.mdl.PowerSwitchState
         {
             return JsonConvert.DeserializeObject<PowerSwitchState>(json);
         }
+
+        public static PowerSwitchState Deserialize(string json)
+        {
+            return JsonConvert.DeserializeObject<PowerSwitchState>(json);
+        }
     }
 
 }
