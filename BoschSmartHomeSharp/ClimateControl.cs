@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using static BoschSmartHomeSharp;
@@ -310,7 +311,7 @@ namespace BoschSmartHome.ClimateControl
             //Request Body
             request.AddParameter("application/json",
                 RoomClimateControlState.Serialize(
-                    new RoomClimateControlState { Type = "climateControlState", setpointTemperature = setpointTemperature.ToString() }),
+                    new RoomClimateControlState { Type = "climateControlState", setpointTemperature = setpointTemperature.ToString(CultureInfo.InvariantCulture) }),
                 ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
