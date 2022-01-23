@@ -14,9 +14,9 @@ namespace BoschSmartHome.mdl.DoorWindowContact
         public DoorWindowContact.ShutterContactState state { get; set; }
         public string path { get; set; }
 
-        public static ShutterContact Serialize(string json)
+        public static string Serialize(ShutterContact shutterContact)
         {
-            return JsonConvert.DeserializeObject<ShutterContact>(json);
+            return JsonConvert.SerializeObject(shutterContact);
         }
 
         public static ShutterContact Deserialize(string json)
