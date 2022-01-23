@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 using System.Globalization;
 using BoschSmartHome.mdl.RegisterDevice;
 using BoschSmartHome.mdl.Device;
-using BoschSmartHome.mdl.LightControl;
-using BoschSmartHome.mdl.LightControl;
 
 public class BoschSmartHomeSharp
 {

@@ -1,12 +1,9 @@
 ﻿using BoschSmartHome.mdl.Device;
 using BoschSmartHome.mdl.DoorWindowContact;
-using BoschSmartHome.mdl.DoorWindowContact;
 using RestSharp;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
+
 using static BoschSmartHomeSharp;
 
 namespace BoschSmartHome.DoorWindowContact
