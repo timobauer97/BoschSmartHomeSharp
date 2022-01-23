@@ -11,6 +11,10 @@ using static BoschSmartHomeSharp;
 
 namespace BoschSmartHome.LightControl
 {
+    /// <summary>
+    /// Contains functions for controlling and monitoring Bosch Smart Home Lightswitches and Powermeters.<br />
+    /// For further informations read <a href="https://apidocs.bosch-smarthome.com/local/#/">the official documentation</a> -> Definition Light Control
+    /// </summary>
     public static class LightControl
     {
         /// <summary>
