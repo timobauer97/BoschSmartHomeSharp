@@ -60,14 +60,75 @@ namespace BoschSmartHome.ClimateControl
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 //TODO Exception Handling
-                RoomClimateControl powerMeter = RoomClimateControl.Deserialize(response.Content);
-                Debug.WriteLine($"found PowerMeter {deviceId} devices.");
+                RoomClimateControl roomClimateControl = RoomClimateControl.Deserialize(response.Content);
+                Debug.WriteLine($"found RoomClimateControl {deviceId}.");
 
-                return powerMeter;
+                return roomClimateControl;
             }
             else
             {
-                Debug.WriteLine($"Could not fetch PowerMeter. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+                Debug.WriteLine($"Could not fetch RoomClimateControl. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     retrives the temperature level from the Smarthome Controller. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="credentials">the credentials for the communication with the Smarthome Controller</param>
+        /// <param name="deviceId">the device</param>
+        /// <returns>
+        ///     <see cref="TemperatureLevel"/><br />
+        ///     <b>value</b>: the received data
+        ///     <b>null</b>: the request failed. See Debug-log for more informations.
+        /// </returns>
+        public static TemperatureLevel getTemperatureLevel(ApiClient credentials, Device device)
+        {
+            return getTemperatureLevel(credentials, device?.id);
+        }
+
+        /// <summary>
+        ///     retrives the temperature level from the Smarthome Controller. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="credentials">the credentials for the communication with the Smarthome Controller</param>
+        /// <param name="deviceId">the id of the device</param>
+        /// <returns>
+        ///     <see cref="TemperatureLevel"/><br />
+        ///     <b>value</b>: the received data
+        ///     <b>null</b>: the request failed. See Debug-log for more informations.
+        /// </returns>
+        public static TemperatureLevel getTemperatureLevel(ApiClient credentials, string deviceId)
+        {
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/TemperatureLevel")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { credentials.Certificate },
+                Timeout = -1
+            };
+
+            var request = new RestRequest(Method.GET);
+
+            //Request Header
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                //TODO Exception Handling
+                TemperatureLevel temperatureLevel = TemperatureLevel.Deserialize(response.Content);
+                Debug.WriteLine($"found TemperatureLevel {deviceId}.");
+
+                return temperatureLevel;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not fetch TemperatureLevel. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
 
                 return null;
             }
