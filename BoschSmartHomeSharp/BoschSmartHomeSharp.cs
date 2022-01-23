@@ -10,6 +10,7 @@ using System.Globalization;
 using BoschSmartHome.mdl.RegisterDevice;
 using BoschSmartHome.mdl.Device;
 using BoschSmartHome.mdl.PowerSwitchState;
+using BoschSmartHome.mdl.PowerMeter;
 
 public class BoschSmartHomeSharp
 {
@@ -384,6 +385,45 @@ public class BoschSmartHomeSharp
             JToken token = JObject.Parse(jsonResponse2);
             var payloadJson = token["clients"].ToString();
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
+        }
+
+        public PowerMeter getPowerMeter(Device device)
+        {
+            return getPowerMeter(device?.id);
+        }
+
+        public PowerMeter getPowerMeter(string deviceId)
+        {
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerMeter")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                Timeout = -1
+            };
+
+            var request = new RestRequest(Method.GET);
+
+            //Request Header
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                //TODO Exception Handling
+                PowerMeter powerMeter = PowerMeter.Deserialize(response.Content);
+                Debug.WriteLine($"found PowerMeter {deviceId} devices.");
+
+                return powerMeter;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not fetch PowerMeter. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return null;
+            }
         }
 
         /// <summary>

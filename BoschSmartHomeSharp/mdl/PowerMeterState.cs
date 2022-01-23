@@ -7,8 +7,8 @@ namespace BoschSmartHome.mdl.PowerMeterState
 {
     public class PowerMeterState
     {
-        public int powerConsumption { get; set; }
-        public int energyConsumption { get; set; }
+        public double powerConsumption { get; set; }
+        public double energyConsumption { get; set; }
 
         public static string Serialize(PowerMeterState state)
         {
