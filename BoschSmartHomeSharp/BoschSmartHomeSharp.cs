@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 using BoschSmartHome.mdl.RegisterDevice;
 using BoschSmartHome.mdl.Device;
+using BoschSmartHome.mdl.PowerSwitchState;
 
 public class BoschSmartHomeSharp
 {
@@ -385,9 +386,68 @@ public class BoschSmartHomeSharp
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
         }
 
+        public bool setPowerSwitchState(Device device, bool state)
+        {
+            return setPowerSwitchState(device?.id, state);
+        }
+
+        /// <summary>
+        ///     Sets the state of a powerswitch. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="deviceId">the id of the device.</param>
+        /// <param name="state">
+        ///     <see cref="bool"/> <br />
+        ///     <b>true</b>: the switch will be turned on <br />
+        ///     <b>false</b>: the switch will be turned off
+        /// </param>
+        /// <returns>
+        ///     <see cref="bool"/> <br />
+        ///     <b>true</b>: the state was successfully set <br />
+        ///     <b>false</b>: The request failed. See Debug-log for more informations.
+        /// </returns>
+        public bool setPowerSwitchState(string deviceId, bool state)
+        {
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                Timeout = -1
+            };
+
+            var request = new RestRequest(Method.PUT);
+
+            //Request Header
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+
+            //Request Body
+            request.AddParameter("application/json", 
+                PowerSwitchState.Serialize(
+                    new PowerSwitchState { Type = "powerSwitchState", switchState = state ? "ON" : "OFF" }),
+                ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+
+            // No-Content is OK
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                Debug.WriteLine($"set state of device {deviceId} to {(state ? "ON" : "OFF")}");
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not set power switch state. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return false;
+            }
+        }
+
+
         /// <summary>
         ///     Fetches the device list from the Bosch Smarthome Controller.<br />
-        ///     the Certificate must be paired with the Controller (see <see cref="registerDevice(string, string, string, string)"/>)
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
         /// </summary>
         /// <returns>
         ///     <b>List with <see cref="Device"/></b>: Contains all devices, paired with the Smarthome Controller.<br />
@@ -441,7 +501,7 @@ public class BoschSmartHomeSharp
         /// <returns>
         ///     <see cref="bool"/><br /> 
         ///     <b>true:</b> the client has been successfully registered.<br />
-        ///     <b>false:</b> an error occured.
+        ///     <b>false:</b> an error occured. See Debug-log for more informations.
         /// </returns>
         public bool registerDevice(string devicePwdBase64, string cert, string clientId, string clientName)
         {
