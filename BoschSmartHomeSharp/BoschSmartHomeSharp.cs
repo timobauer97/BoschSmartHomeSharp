@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
 using BoschSmartHome.mdl.RegisterDevice;
+using BoschSmartHome.mdl.Device;
 
 public class BoschSmartHomeSharp
 {
@@ -370,9 +371,10 @@ public class BoschSmartHomeSharp
 
 
 
-        public List<device> getDevices()
+        public List<Device> getDevices()
         {
-            RestSharp.RestClient client = new RestSharp.RestClient(url + "/devices");
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestSharp.RestClient client = new RestSharp.RestClient("https://" + IPaddress + ":8444/smarthome/devices");
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             client.ClientCertificates = new X509CertificateCollection() { certificate };
             client.Timeout = -1;
@@ -381,10 +383,20 @@ public class BoschSmartHomeSharp
             request.AddHeader("api-version", "2.1");
             IRestResponse response = client.Execute(request);
             //Debug.WriteLine(response.Content);
-            string jsonResponse2 = "{\"devices\":" + response.Content + "}";
-            JToken token = JObject.Parse(jsonResponse2);
-            var payloadJson = token["devices"].ToString();
-            return JsonConvert.DeserializeObject<List<device>>(payloadJson);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                List<Device> devices = Device.DeserializeList(response.Content);
+                Debug.WriteLine($"found {devices.Count} devices.");
+
+                return devices;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not fetch devices. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return null;
+            }
         }
 
         public List<client> getClients()
