@@ -1,6 +1,6 @@
 ﻿using BoschSmartHome.mdl.Device;
-using BoschSmartHome.mdl.PowerMeter;
-using BoschSmartHome.mdl.PowerSwitchState;
+using BoschSmartHome.mdl.LightControl;
+using BoschSmartHome.mdl.LightControl;
 using RestSharp;
 using System;
 using System.Collections.Generic;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BoschSmartHome.mdl.PowerMeter
+namespace BoschSmartHome.mdl.LightControl
 {
     public class PowerMeter
     {
@@ -11,7 +11,7 @@ namespace BoschSmartHome.mdl.PowerMeter
         public string Type { get; set; }
         public string id { get; set; }
         public string deviceId { get; set; }
-        public PowerMeterState.PowerMeterState state { get; set; }
+        public LightControl.PowerMeterState state { get; set; }
         public string path { get; set; }
 
         public static string Serialize(PowerMeter state)

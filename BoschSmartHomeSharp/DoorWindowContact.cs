@@ -1,6 +1,6 @@
 ﻿using BoschSmartHome.mdl.Device;
-using BoschSmartHome.mdl.ShutterContactState;
-using BoschSmartHome.mdl.ShutterContact;
+using BoschSmartHome.mdl.DoorWindowContact;
+using BoschSmartHome.mdl.DoorWindowContact;
 using RestSharp;
 using System;
 using System.Collections.Generic;

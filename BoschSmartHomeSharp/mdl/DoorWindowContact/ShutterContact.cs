@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BoschSmartHome.mdl.ShutterContact
+namespace BoschSmartHome.mdl.DoorWindowContact
 {
     public class ShutterContact
     {
@@ -11,7 +11,7 @@ namespace BoschSmartHome.mdl.ShutterContact
         public string Type { get; set; }
         public string id { get; set; }
         public string deviceId { get; set; }
-        public ShutterContactState.ShutterContactState state { get; set; }
+        public DoorWindowContact.ShutterContactState state { get; set; }
         public string path { get; set; }
 
         public static ShutterContact Serialize(string json)

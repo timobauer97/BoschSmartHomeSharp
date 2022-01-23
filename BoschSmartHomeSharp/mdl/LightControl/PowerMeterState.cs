@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BoschSmartHome.mdl.PowerMeterState
+namespace BoschSmartHome.mdl.LightControl
 {
     public class PowerMeterState
     {
