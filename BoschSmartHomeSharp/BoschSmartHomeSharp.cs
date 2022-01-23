@@ -421,24 +421,37 @@ public class BoschSmartHomeSharp
         /// </returns>
         public bool registerDevice(string devicePwdBase64, string cert, string clientId, string clientName)
         {
+            RestClient client = new RestClient("https://" + IPaddress + ":8443/smarthome/clients")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                Timeout = -1
+            };
 
-            RestSharp.RestClient client = new RestSharp.RestClient("https://" + IPaddress + ":8443/smarthome/clients");
-            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
+            RestRequest request = new RestRequest(Method.POST);
+
+            // Request Header
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Systempassword", devicePwdBase64);
-            request.AddParameter("application/json", RegisterDevice.Serialize(new RegisterDevice { Type = "client", id = $"oss_{clientId}", name = $"OSS {clientName}", primaryRole = "ROLE_RESTRICTED_CLIENT", certificate = cert }), ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-            Debug.WriteLine(((int)response.StatusCode));
 
-            Debug.WriteLine(response.Content);
+            // Request Body
+            request.AddParameter("application/json",
+                RegisterDevice.Serialize(
+                    new RegisterDevice { Type = "client", id = $"oss_{clientId}", name = $"OSS {clientName}", primaryRole = "ROLE_RESTRICTED_CLIENT", certificate = cert }),
+                ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                Debug.WriteLine("client registration was successfull");
                 return true;
+            }
             else
+            {
+                Debug.WriteLine($"client registration failed with Statuscode {response.StatusCode} ({response.StatusDescription}) and content {response.Content}. Exception: {response.ErrorException}");
                 return false;
+            }
 
 
         }
