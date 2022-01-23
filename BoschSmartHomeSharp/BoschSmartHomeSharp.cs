@@ -387,11 +387,31 @@ public class BoschSmartHomeSharp
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
         }
 
+        /// <summary>
+        ///     retrives the power meter data from the Smarthome Controller. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="device">the device</param>
+        /// <returns>
+        ///     <see cref="PowerMeter"/><br />
+        ///     <b>value</b>: the received data
+        ///     <b>null</b>: the request failed. See Debug-log for more informations.
+        /// </returns>
         public PowerMeter getPowerMeter(Device device)
         {
             return getPowerMeter(device?.id);
         }
 
+        /// <summary>
+        ///     retrives the power meter data from the Smarthome Controller. <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="deviceId">the id of the device</param>
+        /// <returns>
+        ///     <see cref="PowerMeter"/><br />
+        ///     <b>value</b>: the received data
+        ///     <b>null</b>: the request failed. See Debug-log for more informations.
+        /// </returns>
         public PowerMeter getPowerMeter(string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
