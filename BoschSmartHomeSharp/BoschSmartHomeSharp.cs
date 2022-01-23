@@ -18,14 +18,15 @@ public class BoschSmartHomeSharp
     public class ApiClient
     {
         public string IPaddress { get; set; }
+        internal X509Certificate2 Certificate { get; private set; }
+
         string url;
         private static string certFile;
-        private X509Certificate2 certificate;
         public ApiClient(string ip)
         {
             IPaddress = ip;
             certFile = Path.Join(Directory.GetCurrentDirectory(), "client_pfx.pfx");
-            certificate = new X509Certificate2(certFile, "12345");
+            Certificate = new X509Certificate2(certFile, "12345");
             url = "https://" + IPaddress + ":8444/smarthome";
 
 
@@ -35,7 +36,7 @@ public class BoschSmartHomeSharp
         public ApiClient(string ip, string certFilePath, string certPassword)
         {
             IPaddress = ip;
-            certificate = new X509Certificate2(certFilePath, certPassword);
+            Certificate = new X509Certificate2(certFilePath, certPassword);
             url = "https://" + IPaddress + ":8444/smarthome";
 
 
@@ -45,7 +46,7 @@ public class BoschSmartHomeSharp
         public ApiClient(string ip, string certFilePath)
         {
             IPaddress = ip;
-            certificate = new X509Certificate2(certFilePath);
+            Certificate = new X509Certificate2(certFilePath);
             url = "https://" + IPaddress + ":8444/smarthome";
 
 
@@ -64,7 +65,7 @@ public class BoschSmartHomeSharp
 
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/json");
@@ -106,7 +107,7 @@ public class BoschSmartHomeSharp
 
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/json");
@@ -141,7 +142,7 @@ public class BoschSmartHomeSharp
 
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/json");
@@ -180,7 +181,7 @@ public class BoschSmartHomeSharp
                 client = new RestSharp.RestClient(url + "/devices/" + mydevice.id + "/services/BinarySwitch/state");
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Content-Type", "application/json");
@@ -212,7 +213,7 @@ public class BoschSmartHomeSharp
                 client = new RestSharp.RestClient(url + "/devices/" + mydevice.id + "/services/BinarySwitch/state");
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Content-Type", "application/json");
@@ -243,7 +244,7 @@ public class BoschSmartHomeSharp
 
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Content-Type", "application/json");
@@ -277,7 +278,7 @@ public class BoschSmartHomeSharp
 
 
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Content-Type", "application/json");
@@ -309,7 +310,7 @@ public class BoschSmartHomeSharp
             RestSharp.RestClient client;
             client = new RestSharp.RestClient("https://" + IPaddress + ":8444/remote/json-rpc");
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
@@ -331,7 +332,7 @@ public class BoschSmartHomeSharp
                 RestSharp.RestClient client;
                 client = new RestSharp.RestClient("https://" + IPaddress + ":8444/remote/json-rpc");
                 client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-                client.ClientCertificates = new X509CertificateCollection() { certificate };
+                client.ClientCertificates = new X509CertificateCollection() { Certificate };
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("Content-Type", "application/json");
@@ -358,7 +359,7 @@ public class BoschSmartHomeSharp
             RestSharp.RestClient client;
             client = new RestSharp.RestClient("https://" + IPaddress + ":8444/remote/json-rpc");
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
@@ -375,7 +376,7 @@ public class BoschSmartHomeSharp
         {
             RestSharp.RestClient client = new RestSharp.RestClient(url + "/clients");
             client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            client.ClientCertificates = new X509CertificateCollection() { certificate };
+            client.ClientCertificates = new X509CertificateCollection() { Certificate };
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/json");
@@ -385,197 +386,6 @@ public class BoschSmartHomeSharp
             JToken token = JObject.Parse(jsonResponse2);
             var payloadJson = token["clients"].ToString();
             return JsonConvert.DeserializeObject<List<client>>(payloadJson);
-        }
-
-        /// <summary>
-        ///     retrives the power meter data from the Smarthome Controller. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="device">the device</param>
-        /// <returns>
-        ///     <see cref="PowerMeter"/><br />
-        ///     <b>value</b>: the received data
-        ///     <b>null</b>: the request failed. See Debug-log for more informations.
-        /// </returns>
-        public PowerMeter getPowerMeter(Device device)
-        {
-            return getPowerMeter(device?.id);
-        }
-
-        /// <summary>
-        ///     retrives the power meter data from the Smarthome Controller. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="deviceId">the id of the device</param>
-        /// <returns>
-        ///     <see cref="PowerMeter"/><br />
-        ///     <b>value</b>: the received data
-        ///     <b>null</b>: the request failed. See Debug-log for more informations.
-        /// </returns>
-        public PowerMeter getPowerMeter(string deviceId)
-        {
-            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
-            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerMeter")
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                ClientCertificates = new X509CertificateCollection() { certificate },
-                Timeout = -1
-            };
-
-            var request = new RestRequest(Method.GET);
-
-            //Request Header
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("api-version", "2.1");
-
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                //TODO Exception Handling
-                PowerMeter powerMeter = PowerMeter.Deserialize(response.Content);
-                Debug.WriteLine($"found PowerMeter {deviceId} devices.");
-
-                return powerMeter;
-            }
-            else
-            {
-                Debug.WriteLine($"Could not fetch PowerMeter. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///     retrives the power switch state from the Smarthome Controller. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="device">the device</param>
-        /// <returns>
-        ///     <see cref="PowerSwitchState"/><br />
-        ///     <b>value</b>: the received data
-        ///     <b>null</b>: the request failed. See Debug-log for more informations.
-        /// </returns>
-        public PowerSwitchState getPowerSwitchState(Device device)
-        {
-            return getPowerSwitchState(device?.id);
-        }
-
-        /// <summary>
-        ///     retrives the power switch state from the Smarthome Controller. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="deviceId">the id of the device</param>
-        /// <returns>
-        ///     <see cref="PowerSwitchState"/><br />
-        ///     <b>value</b>: the received data
-        ///     <b>null</b>: the request failed. See Debug-log for more informations.
-        /// </returns>
-        public PowerSwitchState getPowerSwitchState(string deviceId)
-        {
-            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
-            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                ClientCertificates = new X509CertificateCollection() { certificate },
-                Timeout = -1
-            };
-
-            var request = new RestRequest(Method.GET);
-
-            //Request Header
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("api-version", "2.1");
-
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                //TODO Exception Handling
-                PowerSwitchState powerSwitchState = PowerSwitchState.Deserialize(response.Content);
-                Debug.WriteLine($"found PowerSwitch {deviceId}. state: {powerSwitchState.switchState}");
-
-                return powerSwitchState;
-            }
-            else
-            {
-                Debug.WriteLine($"Could not fetch PowerSwitchState. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///     Sets the state of a powerswitch. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="device">the device.</param>
-        /// <param name="state">
-        ///     <see cref="bool"/> <br />
-        ///     <b>true</b>: the switch will be turned on <br />
-        ///     <b>false</b>: the switch will be turned off
-        /// </param>
-        /// <returns>
-        ///     <see cref="bool"/> <br />
-        ///     <b>true</b>: the state was successfully set <br />
-        ///     <b>false</b>: The request failed. See Debug-log for more informations.
-        /// </returns>
-        public bool setPowerSwitchState(Device device, bool state)
-        {
-            return setPowerSwitchState(device?.id, state);
-        }
-
-        /// <summary>
-        ///     Sets the state of a powerswitch. <br />
-        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
-        /// </summary>
-        /// <param name="deviceId">the id of the device.</param>
-        /// <param name="state">
-        ///     <see cref="bool"/> <br />
-        ///     <b>true</b>: the switch will be turned on <br />
-        ///     <b>false</b>: the switch will be turned off
-        /// </param>
-        /// <returns>
-        ///     <see cref="bool"/> <br />
-        ///     <b>true</b>: the state was successfully set <br />
-        ///     <b>false</b>: The request failed. See Debug-log for more informations.
-        /// </returns>
-        public bool setPowerSwitchState(string deviceId, bool state)
-        {
-            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
-            RestClient client = new RestClient("https://" + IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                ClientCertificates = new X509CertificateCollection() { certificate },
-                Timeout = -1
-            };
-
-            var request = new RestRequest(Method.PUT);
-
-            //Request Header
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("api-version", "2.1");
-
-            //Request Body
-            request.AddParameter("application/json", 
-                PowerSwitchState.Serialize(
-                    new PowerSwitchState { Type = "powerSwitchState", switchState = state ? "ON" : "OFF" }),
-                ParameterType.RequestBody);
-
-            IRestResponse response = client.Execute(request);
-
-            // No-Content is OK
-            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-            {
-                Debug.WriteLine($"set state of device {deviceId} to {(state ? "ON" : "OFF")}");
-                return true;
-            }
-            else
-            {
-                Debug.WriteLine($"Could not set power switch state. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
-
-                return false;
-            }
         }
 
 
@@ -593,7 +403,7 @@ public class BoschSmartHomeSharp
             RestClient client = new RestClient("https://" + IPaddress + ":8444/smarthome/devices")
             {
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                ClientCertificates = new X509CertificateCollection() { certificate },
+                ClientCertificates = new X509CertificateCollection() { Certificate },
                 Timeout = -1
             };
 
@@ -642,7 +452,7 @@ public class BoschSmartHomeSharp
             RestClient client = new RestClient("https://" + IPaddress + ":8443/smarthome/clients")
             {
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                ClientCertificates = new X509CertificateCollection() { certificate },
+                ClientCertificates = new X509CertificateCollection() { Certificate },
                 Timeout = -1
             };
 
