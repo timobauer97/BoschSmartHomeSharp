@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BoschSmartHomeSharp.mdl.LongPolling
+namespace BoschSmartHome.mdl.LongPolling
 {
     public class LongPolling
     {
