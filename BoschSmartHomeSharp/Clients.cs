@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using static BoschSmartHomeSharp;
 
 namespace BoschSmartHome.Clients
 {
@@ -27,7 +26,7 @@ namespace BoschSmartHome.Clients
         ///     <b>true:</b> the client has been successfully registered.<br />
         ///     <b>false:</b> an error occured. See Debug-log for more informations.
         /// </returns>
-        public static bool registerClient(ApiClient credentials, string devicePwdBase64, string cert, string clientId, string clientName)
+        public static bool registerClient(BoschApiCredentials credentials, string devicePwdBase64, string cert, string clientId, string clientName)
         {
             RestClient client = new RestClient("https://" + credentials.IPaddress + ":8443/smarthome/clients")
             {

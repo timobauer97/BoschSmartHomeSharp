@@ -10,17 +10,17 @@ using System.Globalization;
 using BoschSmartHome.mdl.RegisterDevice;
 using BoschSmartHome.mdl.Device;
 
-public class BoschSmartHomeSharp
+namespace BoschSmartHome
 {
  
-    public class ApiClient
+    public class BoschApiCredentials
     {
         public string IPaddress { get; set; }
         internal X509Certificate2 Certificate { get; private set; }
 
         string url;
         private static string certFile;
-        public ApiClient(string ip)
+        public BoschApiCredentials(string ip)
         {
             IPaddress = ip;
             certFile = Path.Join(Directory.GetCurrentDirectory(), "client_pfx.pfx");
@@ -31,7 +31,7 @@ public class BoschSmartHomeSharp
 
         }
 
-        public ApiClient(string ip, string certFilePath, string certPassword)
+        public BoschApiCredentials(string ip, string certFilePath, string certPassword)
         {
             IPaddress = ip;
             Certificate = new X509Certificate2(certFilePath, certPassword);
@@ -41,7 +41,7 @@ public class BoschSmartHomeSharp
 
         }
 
-        public ApiClient(string ip, string certFilePath)
+        public BoschApiCredentials(string ip, string certFilePath)
         {
             IPaddress = ip;
             Certificate = new X509Certificate2(certFilePath);

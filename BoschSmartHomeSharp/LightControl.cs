@@ -4,8 +4,6 @@ using RestSharp;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
-using static BoschSmartHomeSharp;
-
 namespace BoschSmartHome.LightControl
 {
     /// <summary>
@@ -25,7 +23,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static PowerMeter getPowerMeter(ApiClient credentials, Device device)
+        public static PowerMeter getPowerMeter(BoschApiCredentials credentials, Device device)
         {
             return getPowerMeter(credentials, device?.id);
         }
@@ -41,7 +39,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static PowerMeter getPowerMeter(ApiClient credentials, string deviceId)
+        public static PowerMeter getPowerMeter(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerMeter")
@@ -86,7 +84,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static PowerSwitchState getPowerSwitchState(ApiClient credentials, Device device)
+        public static PowerSwitchState getPowerSwitchState(BoschApiCredentials credentials, Device device)
         {
             return getPowerSwitchState(credentials, device?.id);
         }
@@ -102,7 +100,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static PowerSwitchState getPowerSwitchState(ApiClient credentials, string deviceId)
+        public static PowerSwitchState getPowerSwitchState(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")
@@ -152,7 +150,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>true</b>: the state was successfully set <br />
         ///     <b>false</b>: The request failed. See Debug-log for more informations.
         /// </returns>
-        public static bool setPowerSwitchState(ApiClient credentials, Device device, bool state)
+        public static bool setPowerSwitchState(BoschApiCredentials credentials, Device device, bool state)
         {
             return setPowerSwitchState(credentials, device?.id, state);
         }
@@ -173,7 +171,7 @@ namespace BoschSmartHome.LightControl
         ///     <b>true</b>: the state was successfully set <br />
         ///     <b>false</b>: The request failed. See Debug-log for more informations.
         /// </returns>
-        public static bool setPowerSwitchState(ApiClient credentials, string deviceId, bool state)
+        public static bool setPowerSwitchState(BoschApiCredentials credentials, string deviceId, bool state)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/PowerSwitch/state")

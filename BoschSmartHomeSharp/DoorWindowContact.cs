@@ -4,8 +4,6 @@ using RestSharp;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
-using static BoschSmartHomeSharp;
-
 namespace BoschSmartHome.DoorWindowContact
 {
     public static class DoorWindowContact
@@ -22,7 +20,7 @@ namespace BoschSmartHome.DoorWindowContact
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static ShutterContactState getShutterContactState(ApiClient credentials, Device device)
+        public static ShutterContactState getShutterContactState(BoschApiCredentials credentials, Device device)
         {
             return getShutterContactState(credentials, device?.id);
         }
@@ -38,7 +36,7 @@ namespace BoschSmartHome.DoorWindowContact
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static ShutterContactState getShutterContactState(ApiClient credentials, string deviceId)
+        public static ShutterContactState getShutterContactState(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/ShutterContact/state")
@@ -83,7 +81,7 @@ namespace BoschSmartHome.DoorWindowContact
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static ShutterContact getShutterContact(ApiClient credentials, Device device)
+        public static ShutterContact getShutterContact(BoschApiCredentials credentials, Device device)
         {
             return getShutterContact(credentials, device?.id);
         }
@@ -99,7 +97,7 @@ namespace BoschSmartHome.DoorWindowContact
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static ShutterContact getShutterContact(ApiClient credentials, string deviceId)
+        public static ShutterContact getShutterContact(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/ShutterContact")

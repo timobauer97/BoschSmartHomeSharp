@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using static BoschSmartHomeSharp;
 
 namespace BoschSmartHome.ClimateControl
 {
@@ -24,7 +23,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static RoomClimateControl getRoomClimateControl(ApiClient credentials, Device device)
+        public static RoomClimateControl getRoomClimateControl(BoschApiCredentials credentials, Device device)
         {
             return getRoomClimateControl(credentials, device?.id);
         }
@@ -40,7 +39,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static RoomClimateControl getRoomClimateControl(ApiClient credentials, string deviceId)
+        public static RoomClimateControl getRoomClimateControl(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/RoomClimateControl")
@@ -85,7 +84,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static TemperatureLevel getTemperatureLevel(ApiClient credentials, Device device)
+        public static TemperatureLevel getTemperatureLevel(BoschApiCredentials credentials, Device device)
         {
             return getTemperatureLevel(credentials, device?.id);
         }
@@ -101,7 +100,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static TemperatureLevel getTemperatureLevel(ApiClient credentials, string deviceId)
+        public static TemperatureLevel getTemperatureLevel(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/TemperatureLevel")
@@ -146,7 +145,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static RoomClimateControlState getRoomClimateControlState(ApiClient credentials, Device device)
+        public static RoomClimateControlState getRoomClimateControlState(BoschApiCredentials credentials, Device device)
         {
             return getRoomClimateControlState(credentials, device?.id);
         }
@@ -162,7 +161,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static RoomClimateControlState getRoomClimateControlState(ApiClient credentials, string deviceId)
+        public static RoomClimateControlState getRoomClimateControlState(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/RoomClimateControl/state")
@@ -207,7 +206,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static TemperatureLevelState getTemperatureLevelState(ApiClient credentials, Device device)
+        public static TemperatureLevelState getTemperatureLevelState(BoschApiCredentials credentials, Device device)
         {
             return getTemperatureLevelState(credentials, device?.id);
         }
@@ -223,7 +222,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>value</b>: the received data
         ///     <b>null</b>: the request failed. See Debug-log for more informations.
         /// </returns>
-        public static TemperatureLevelState getTemperatureLevelState(ApiClient credentials, string deviceId)
+        public static TemperatureLevelState getTemperatureLevelState(BoschApiCredentials credentials, string deviceId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/TemperatureLevel/state")
@@ -272,7 +271,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>true</b>: the state was successfully set <br />
         ///     <b>false</b>: The request failed. See Debug-log for more informations.
         /// </returns>
-        public static bool setRoomClimateControlState(ApiClient credentials, Device device, double setpointTemperature)
+        public static bool setRoomClimateControlState(BoschApiCredentials credentials, Device device, double setpointTemperature)
         {
             return setRoomClimateControlState(credentials, device?.id, setpointTemperature);
         }
@@ -292,7 +291,7 @@ namespace BoschSmartHome.ClimateControl
         ///     <b>true</b>: the state was successfully set <br />
         ///     <b>false</b>: The request failed. See Debug-log for more informations.
         /// </returns>
-        public static bool setRoomClimateControlState(ApiClient credentials, string deviceId, double setpointTemperature)
+        public static bool setRoomClimateControlState(BoschApiCredentials credentials, string deviceId, double setpointTemperature)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/smarthome/devices/{deviceId}/services/RoomClimateControl/state")

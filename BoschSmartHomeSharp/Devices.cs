@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using static BoschSmartHomeSharp;
 
 namespace BoschSmartHome.Devices
 {
@@ -19,7 +18,7 @@ namespace BoschSmartHome.Devices
         ///     <b>List with <see cref="Device"/></b>: Contains all devices, paired with the Smarthome Controller.<br />
         ///     <b>null</b>: The request failed. See Debug-log for more informations.
         /// </returns>
-        public static List<Device> getDevices(ApiClient credentials)
+        public static List<Device> getDevices(BoschApiCredentials credentials)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + ":8444/smarthome/devices")
