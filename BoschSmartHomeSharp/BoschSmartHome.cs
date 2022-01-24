@@ -18,14 +18,12 @@ namespace BoschSmartHome
         public string IPaddress { get; set; }
         internal X509Certificate2 Certificate { get; private set; }
 
-        string url;
         private static string certFile;
         public BoschApiCredentials(string ip)
         {
             IPaddress = ip;
             certFile = Path.Join(Directory.GetCurrentDirectory(), "client_pfx.pfx");
             Certificate = new X509Certificate2(certFile, "12345");
-            url = "https://" + IPaddress + ":8444/smarthome";
 
 
 
@@ -35,7 +33,6 @@ namespace BoschSmartHome
         {
             IPaddress = ip;
             Certificate = new X509Certificate2(certFilePath, certPassword);
-            url = "https://" + IPaddress + ":8444/smarthome";
 
 
 
@@ -45,7 +42,6 @@ namespace BoschSmartHome
         {
             IPaddress = ip;
             Certificate = new X509Certificate2(certFilePath);
-            url = "https://" + IPaddress + ":8444/smarthome";
         }
     }
 }
