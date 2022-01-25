@@ -11,9 +11,24 @@ using LongPollingModel = BoschSmartHome.mdl.LongPolling.LongPolling;
 
 namespace BoschSmartHome.LongPolling
 {
+    /// <summary>
+    /// Contains functions for controlling and monitoring Bosch Smart Home LongPolling.<br />
+    /// For further informations read <a href="https://github.com/BoschSmartHome/bosch-shc-api-docs/tree/master/best_practice#use-long-polling-instead-of-short-polling">the official documentation</a>
+    /// </summary>
     public static class LongPolling
     {
-
+        /// <summary>
+        ///     Subscribes to the Bosch SmartHome HTTP long polling. The poll id which is returned by this function can be used for poll requests.<br />
+        ///     see <see cref="poll(BoschApiCredentials, string)"/> <br />
+        ///     <b>NOTE</b>: As mentioned in the <a href="https://github.com/BoschSmartHome/bosch-shc-api-docs/tree/master/best_practice#use-long-polling-instead-of-short-polling">the official documentation</a>, the pollId expires after 24h!<br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="credentials">the credentials for the communication with the Smarthome Controller</param>
+        /// <returns>
+        ///     <see cref="string"/> <br />
+        ///     <b>value</b>: the poll id which can be used for poll requests <br />
+        ///     <b>null</b>: The request failed. See Debug-log for more informations.
+        /// </returns>
         public static string subscribe(BoschApiCredentials credentials)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
@@ -53,8 +68,20 @@ namespace BoschSmartHome.LongPolling
             }
         }
 
+        /// <summary>
+        ///     Starts a HTTP long poll request. The request is usually kept open until an event occurs (e.g. Thermostate temperature changed, switch state changed). However if no event occurs for five minutes, the controller ends the request with an timeout.  <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="credentials">the credentials for the communication with the Smarthome Controller</param>
+        /// <param name="pollId">the pollId which is assigned at subscription</param>
+        /// <returns>
+        ///     <see cref="PollResult"/> <br />
+        ///     <b>value</b>: the event from the Smarthome controller<br />
+        ///     <b>null</b>: The request was empty or failed. (Might be an timeout). See Debug-log for more informations.
+        /// </returns>
         public static PollResult poll(BoschApiCredentials credentials, string pollId)
         {
+            // TODO: TEST TIMEOUT
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/remote/json-rpc")
             {
@@ -94,12 +121,23 @@ namespace BoschSmartHome.LongPolling
             }
             else
             {
-                Debug.WriteLine($"Could not subscribe to longpolling. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+                Debug.WriteLine($"Did not receive longpolling answer. Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
 
                 return null;
             }
         }
 
+        /// <summary>
+        ///     unsubscribes the longpolling.  <br />
+        ///     the Certificate must be paired with the Controller. Otherwise the operation will fail (see <see cref="registerDevice(string, string, string, string)"/>)
+        /// </summary>
+        /// <param name="credentials">the credentials for the communication with the Smarthome Controller</param>
+        /// <param name="pollId">the pollId which is assigned at subscription</param>
+        /// <returns>
+        ///     <see cref="bool"/> <br />
+        ///     <b>true</b>: successfully unsubscribed<br />
+        ///     <b>false</b>: The request failed. See Debug-log for more informations.
+        /// </returns>
         public static bool unsubscribe(BoschApiCredentials credentials, string pollId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
