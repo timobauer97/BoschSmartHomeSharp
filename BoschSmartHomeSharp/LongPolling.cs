@@ -126,9 +126,7 @@ namespace BoschSmartHome.LongPolling
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                LongPollingSubscribeResult longPollingResult = LongPollingSubscribeResult.Deserialize(response.Content);
-
-                Debug.WriteLine($"successfully unsubscribed to longpolling. id: {longPollingResult.result}");
+                Debug.WriteLine($"successfully unsubscribed to longpolling. id: {pollId}");
                 return true;
             }
             else
