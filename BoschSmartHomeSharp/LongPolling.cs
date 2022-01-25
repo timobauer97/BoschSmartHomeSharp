@@ -1,4 +1,5 @@
 ﻿using BoschSmartHome.mdl.LongPolling;
+using BoschSmartHome.mdl.LongPolling.PollResults;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace BoschSmartHome.LongPolling
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                LongPollingResult longPollingResult = LongPollingResult.Deserialize(response.Content);
+                LongPollingSubscribeResult longPollingResult = LongPollingSubscribeResult.Deserialize(response.Content);
 
                 Debug.WriteLine($"successfully subscribed to longpolling. id: {longPollingResult.result}");
                 return longPollingResult.result;
@@ -52,7 +53,7 @@ namespace BoschSmartHome.LongPolling
             }
         }
 
-        public static string poll(BoschApiCredentials credentials, string pollId)
+        public static IPollResult poll(BoschApiCredentials credentials, string pollId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/remote/json-rpc")
@@ -78,9 +79,33 @@ namespace BoschSmartHome.LongPolling
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                PollResult<object> result = PollResult<object>.Deserialize(response.Content);
 
-                Debug.WriteLine($"received longpoll");
-                throw new NotImplementedException();
+                if(result?.result == null || result.result.Count != 1)
+                {
+                    Debug.WriteLine($"result is {(result?.result == null ? "null." : $"not null. count: {result.result.Count}")}. ");
+                    return null;
+                }
+
+                //TODO Implement other devices (e.g. DoorWindowContact, ...)
+                switch(result.result[0].id)
+                {
+                    case "RoomClimateControl":
+                        PollResult<ClimateControlState> climateControlState = PollResult<ClimateControlState>.Deserialize(response.Content);
+                        Debug.WriteLine($"received longpoll for RoomClimateControl with deviceId: {climateControlState.result[0].deviceId}");
+
+                        return climateControlState;
+
+                    case "PowerSwitch":
+                        PollResult<PowerSwitchState> powerSwitchState = PollResult<PowerSwitchState>.Deserialize(response.Content);
+                        Debug.WriteLine($"received longpoll for PowerSwitch with deviceId: {powerSwitchState.result[0].deviceId}");
+
+                        return powerSwitchState;
+
+                    default:
+                        Debug.WriteLine($"received longpoll with invalid or unknown id. id: {result.result[0].id} deviceId: {result.result[0].deviceId} path: {result.result[0].path}");
+                        return null;
+                }
             }
             else
             {
