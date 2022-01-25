@@ -1,31 +1,28 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BoschSmartHome.mdl.LongPolling.PollResults
 {
-    public interface IPollResult 
+    public class PollResultWrapper
     {
-    }
-
-    public class PollResult<T> : IPollResult
-    {
-        public List<Result<T>> result { get; set; }
+        public List<PollResult> result { get; set; }
         public string jsonrpc { get; set; }
 
-        public static string Serialize(PollResult<T> longPollingPollResult)
+        public static string Serialize(PollResultWrapper longPollingPollResult)
         {
             return JsonConvert.SerializeObject(longPollingPollResult);
         }
 
-        public static PollResult<T> Deserialize(string json)
+        public static PollResultWrapper Deserialize(string json)
         {
-            return JsonConvert.DeserializeObject<PollResult<T>>(json);
+            return JsonConvert.DeserializeObject<PollResultWrapper>(json);
         }
     }
 
-    public class Result<T>
+    public class PollResult
     {
         public string path { get; set; }
         public List<string> operations { get; set; }
@@ -35,6 +32,6 @@ namespace BoschSmartHome.mdl.LongPolling.PollResults
         public string id { get; set; }
         public string deviceId { get; set; }
 
-        public T state { get; set; }
+        public JObject state { get; set; }
     }
 }

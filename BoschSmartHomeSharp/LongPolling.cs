@@ -53,7 +53,7 @@ namespace BoschSmartHome.LongPolling
             }
         }
 
-        public static IPollResult poll(BoschApiCredentials credentials, string pollId)
+        public static PollResult poll(BoschApiCredentials credentials, string pollId)
         {
             // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
             RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/remote/json-rpc")
@@ -79,7 +79,7 @@ namespace BoschSmartHome.LongPolling
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                PollResult<object> result = PollResult<object>.Deserialize(response.Content);
+                PollResultWrapper result = PollResultWrapper.Deserialize(response.Content);
 
                 if(result?.result == null || result.result.Count != 1)
                 {
@@ -87,25 +87,10 @@ namespace BoschSmartHome.LongPolling
                     return null;
                 }
 
-                //TODO Implement other devices (e.g. DoorWindowContact, ...)
-                switch(result.result[0].id)
-                {
-                    case "RoomClimateControl":
-                        PollResult<ClimateControlState> climateControlState = PollResult<ClimateControlState>.Deserialize(response.Content);
-                        Debug.WriteLine($"received longpoll for RoomClimateControl with deviceId: {climateControlState.result[0].deviceId}");
+                //TODO Add Structures/Support for other devices (e.g. DoorWindowContact)
+                Debug.WriteLine($"received longpoll. id: {result.result[0].id} deviceId: {result.result[0].deviceId} path: {result.result[0].path}");
 
-                        return climateControlState;
-
-                    case "PowerSwitch":
-                        PollResult<PowerSwitchState> powerSwitchState = PollResult<PowerSwitchState>.Deserialize(response.Content);
-                        Debug.WriteLine($"received longpoll for PowerSwitch with deviceId: {powerSwitchState.result[0].deviceId}");
-
-                        return powerSwitchState;
-
-                    default:
-                        Debug.WriteLine($"received longpoll with invalid or unknown id. id: {result.result[0].id} deviceId: {result.result[0].deviceId} path: {result.result[0].path}");
-                        return null;
-                }
+                return result.result[0];
             }
             else
             {
