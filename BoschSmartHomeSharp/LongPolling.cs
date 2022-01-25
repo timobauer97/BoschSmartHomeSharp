@@ -102,7 +102,41 @@ namespace BoschSmartHome.LongPolling
 
         public static bool unsubscribe(BoschApiCredentials credentials, string pollId)
         {
-            throw new NotImplementedException();
+            // TODO Refactor.. NOTE: Different Ports for /smarthome/clients, /smarthome/ /remote/json-rpc, /public/ ...
+            RestClient client = new RestClient("https://" + credentials.IPaddress + $":8444/remote/json-rpc")
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                ClientCertificates = new X509CertificateCollection() { credentials.Certificate },
+                Timeout = -1
+            };
+
+            var request = new RestRequest(Method.POST);
+
+            //Request Header
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("api-version", "2.1");
+
+            //Request Body
+            request.AddParameter("application/json",
+                LongPollingModel.Serialize(
+                    new LongPollingModel { jsonrpc = "2.0", method = "RE/unsubscribe", @params = new List<string> { pollId } }),
+                ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                LongPollingSubscribeResult longPollingResult = LongPollingSubscribeResult.Deserialize(response.Content);
+
+                Debug.WriteLine($"successfully unsubscribed to longpolling. id: {longPollingResult.result}");
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine($"Could not unsubscribe longpolling. id: {pollId} Statuscode: {response.StatusCode} ({response.StatusDescription}) content: {response.Content}. Exception: {response.ErrorException}");
+
+                return false;
+            }
         }
     }
 }
